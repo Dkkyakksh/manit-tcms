@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .feedback-form {
+            max-width: 500px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .star-rating {
+            display: flex;
+            align-items: center;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            font-size: 30px;
+            cursor: pointer;
+            color: #ccc;
+            margin-right: 10px;
+        }
+
+        .star-rating label:hover,
+        /* .star-rating label:hover~label {
+            color: #ffcc00;
+        } */
+
+        .star-rating input:checked~label {
+            color: #ffcc00;
+        }
+
+        .image-upload {
+            display: none;
+        }
+
+        .submit-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="feedback-form">
+        <h2>Feedback Form</h2>
+        <form action="#" method="post" id="feedback-form">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="feedback">Feedback:</label>
+                <textarea id="feedback" name="feedback" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="rating">Rating:</label>
+                <div class="star-rating">
+                    <input type="radio" id="star1" name="rating" value="1"><label for="star1">☆</label>
+                    <input type="radio" id="star2" name="rating" value="2"><label for="star2">☆</label>
+                    <input type="radio" id="star3" name="rating" value="3"><label for="star3">☆</label>
+                    <input type="radio" id="star4" name="rating" value="4"><label for="star4">☆</label>
+                    <input type="radio" id="star5" name="rating" value="5"><label for="star5">☆</label>
+                </div>
+            </div>
+            <div class="form-group image-upload">
+                <label for="image">Upload Image:</label>
+                <input type="file" id="image" name="image">
+            </div>
+            <button type="submit" class="submit-button">Submit</button>
+        </form>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var ratingInputs = document.querySelectorAll('input[name="rating"]');
+            var imageUpload = document.querySelector('.image-upload');
+            var stars = document.querySelectorAll('.star-rating label');
+
+            ratingInputs.forEach(function (input) {
+                input.addEventListener("change", function () {
+                    updateStarColors(this);
+                });
+            });
+
+            stars.forEach(function (star, index) {
+                star.addEventListener("mouseover", function () {
+                    // On hover, update the colors of stars up to this index
+                    for (let i = 0; i <= index; i++) {
+                        stars[i].style.color = "#ffcc00";
+                    }
+                });
+
+                star.addEventListener("mouseout", function () {
+                    // On mouseout, reset the colors of all stars
+                    for (let i = 0; i < stars.length; i++) {
+                        stars[i].style.color = "#ccc";
+                    }
+
+                    // Update the colors based on the selected rating
+                    var checkedInput = document.querySelector('input[name="rating"]:checked');
+                    if (checkedInput) {
+                        updateStarColors(checkedInput);
+                    }
+                });
+            });
+
+            function updateStarColors(input) {
+                var rating = parseInt(input.value);
+                for (let i = 0; i < stars.length; i++) {
+                    stars[i].style.color = i < rating ? "#ffcc00" : "#ccc";
+                }
+            }
+
+            ratingInputs.forEach(function (input) {
+                input.addEventListener("change", function () {
+                    if (this.value === "1" || this.value === "2") {
+                        imageUpload.style.display = "block";
+                    } else {
+                        imageUpload.style.display = "none";
+                    }
+                });
+            });
+        });
+
+        // const fdform = document.getElementById("feedback-form");
+        
+        // fdform.addEventListener("submit", ()=>{
+        // })
+    </script>
+</body>
+
+</html>
